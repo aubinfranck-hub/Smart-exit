@@ -231,15 +231,16 @@ export const SmartExitProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
 
     // 2. Vérification si transaction pré-enregistrée ou statut spécifique
+    // Exact ticket identity only. Never authorize using a substring of a scanned payload.
     const matchedTx = transactions.find(
-      tx => tx.ticketNumero === ticketNum || 
-            tx.codeBarre === rawCode || 
-            tx.qrPayload === rawCode ||
-            rawCode.includes(tx.ticketNumero)
+      tx => tx.ticketNumero === ticketNum ||
+            tx.codeBarre === rawCode ||
+            tx.qrPayload === rawCode
     );
 
-    // Test spécifique pour simulation d'anomalie 'Ticket inconnu / frauduleux' (ex: 998412)
-    if (ticketNum === '998412' || (rawCode.toLowerCase().includes('inconnu') && !matchedTx)) {
+    // Fail closed: a missing transaction is not proof of payment.
+    // In production this lookup must be performed against a trusted central POS API.
+    if (!matchedTx) {
       soundFX.alarm();
       const state: ScanVerificationState = {
         type: 'UNKNOWN',
@@ -263,23 +264,8 @@ export const SmartExitProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return state;
     }
 
-    // 4. Ticket conforme (soit trouvé dans transactions, soit extrait directement du ticket physique/QR en mode autonome)
-    const validTicket: CashTransaction = matchedTx || {
-      ticketNumero: ticketNum,
-      caisseNumero: info.caisse || '02',
-      caissierId: `CS-${info.caisse || '02'}`,
-      date: new Date().toISOString().slice(0, 10),
-      heure: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-      montantTotal: info.montant || 35000,
-      nombreArticles: info.articles || 4,
-      statutPaiement: 'PAID',
-      modePaiement: 'ESPECES',
-    };
-
-    // Si nouveau ticket autonome valide, on l'ajoute silencieusement à la liste locale si non présent
-    if (!matchedTx) {
-      setTransactions(prev => [validTicket, ...prev]);
-    }
+    // Only an existing, explicitly paid transaction can reach the authorization screen.
+    const validTicket: CashTransaction = matchedTx;
 
     // Screen 4: Vérification automatique & Sortie Autorisée (Première présentation)
     const state: ScanVerificationState = {
