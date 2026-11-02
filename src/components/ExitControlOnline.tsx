@@ -1,5 +1,8 @@
-import React,{useState} from 'react';
+import React,{useCallback,useState} from 'react';
+import {TicketCamera} from './TicketCamera';
 export function ExitControlOnline(){
+ const [cameraOpen,setCameraOpen]=useState(false);
+ const onRead=useCallback((code:string)=>{setTicket(code.trim());setReady(false);setCameraOpen(false);setStatus('Ticket scanné : vérifier le doublon');},[]);
  const [token,setToken]=useState(''),[ticket,setTicket]=useState(''),[note,setNote]=useState(''),[count,setCount]=useState(''),[status,setStatus]=useState(''),[ready,setReady]=useState(false);
  async function call(path:string,body?:object){
   const r=await fetch('/api/'+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
@@ -18,6 +21,8 @@ export function ExitControlOnline(){
   <h2 className="text-2xl font-bold">Smart Exit — Sortie autonome</h2>
   <input aria-label="Jeton du contrôleur" type="password" placeholder="Jeton du contrôleur" value={token} onChange={e=>setToken(e.target.value)} className="w-full p-3 rounded bg-slate-800"/>
   <button onClick={()=>run('me')} className="bg-blue-600 p-3 rounded">Connecter le poste</button>
+  <button onClick={()=>setCameraOpen(v=>!v)} className="bg-slate-700 p-3 rounded">{cameraOpen?'Fermer la caméra':'Scanner avec la caméra'}</button>
+  {cameraOpen&&<TicketCamera onRead={onRead}/>}
   <input aria-label="Ticket" placeholder="Numéro du ticket" value={ticket} onChange={e=>{setTicket(e.target.value);setReady(false);}} className="w-full p-3 rounded bg-slate-800"/>
   <button onClick={()=>run('verify')} className="bg-blue-600 p-3 rounded">Vérifier doublon</button>
   <input aria-label="Nombre articles" type="number" min="0" placeholder="Nombre d'articles (facultatif)" value={count} onChange={e=>setCount(e.target.value)} className="w-full p-3 rounded bg-slate-800"/>
