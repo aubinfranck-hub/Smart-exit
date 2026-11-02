@@ -10,7 +10,7 @@ export function ExitControlOnline(){
   try{
    const d=await call(action,action==='me'?undefined:action==='verify'?{ticketNumber:ticket}:{ticketNumber:ticket,articleCount:count===''?undefined:Number(count),itemsNote:note});
    setStatus(action==='me'?'Poste connecté : '+d.controllerId+' / '+d.gateId:d.status==='NOT_YET_CONTROLLED'?'Ticket jamais contrôlé':d.status==='VALIDATED'?'SORTIE ENREGISTRÉE':d.status==='ALREADY_CONTROLLED'?'ALERTE : TICKET DÉJÀ UTILISÉ':d.status);
-   if(action==='me')setReady(true);
+   
    if(action==='verify'&&d.status==='NOT_YET_CONTROLLED')setReady(true);
   }catch(e){setStatus('CONTRÔLE IMPOSSIBLE : '+String(e));}
  }
