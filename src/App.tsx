@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ExitHistoryOnline } from './components/ExitHistoryOnline';
+import { ExitControlOnline } from './components/ExitControlOnline';
 import { SmartExitProvider, useSmartExit } from './context/SmartExitContext';
 import { Navbar, NavTab } from './components/Navbar';
 import { VigileScannerView } from './components/VigileScannerView';
@@ -22,11 +24,11 @@ const AppContent: React.FC = () => {
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8">
-        {activeTab === 'TABLET_VIGILE' && <VigileScannerView />}
+        {activeTab === 'TABLET_VIGILE' && <ExitControlOnline />}
         {activeTab === 'RESPONSABLE_SECURITE' && <SecurityDashboard />}
         {activeTab === 'RAPPROCHEMENT_CAISSE' && <ReconciliationView />}
         {activeTab === 'DASHBOARD_DIRECTION' && <DirectionDashboard />}
-        {activeTab === 'HISTORIQUE' && <HistoryView />}
+        {activeTab === 'HISTORIQUE' && <ExitHistoryOnline />}
         {activeTab === 'TICKETS_TEST' && (
           <TicketDemoSheet onSwitchToTablet={() => setActiveTab('TABLET_VIGILE')} />
         )}
