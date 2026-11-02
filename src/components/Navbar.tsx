@@ -56,7 +56,7 @@ export const Navbar: React.FC<Props> = ({ activeTab, setActiveTab }) => {
               </div>
               <div className="text-[11px] text-slate-400 -mt-0.5 flex items-center gap-1.5">
                 <Store className="w-3 h-3 text-slate-500" />
-                Système autonome de contrôle des sorties
+                Contrôle indépendant des tickets de sortie
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@ export const Navbar: React.FC<Props> = ({ activeTab, setActiveTab }) => {
               }`}
             >
               <Tablet className="w-4 h-4" />
-              Écran Tablette Vigile
+              Contrôle de sortie
             </button>
 
             <button
@@ -187,7 +187,7 @@ export const Navbar: React.FC<Props> = ({ activeTab, setActiveTab }) => {
         {/* Mobile Horizontal Navigation bar */}
         <div className="flex lg:hidden overflow-x-auto pb-2 gap-1.5 scrollbar-none">
           {[
-            { id: 'TABLET_VIGILE', label: '📱 Tablette Vigile' },
+            { id: 'TABLET_VIGILE', label: '📱 Contrôle de sortie' },
             { id: 'FICHE_PDF', label: '📄 Fiche PDF' },
             { id: 'RESPONSABLE_SECURITE', label: '🛡️ Sécurité' },
             { id: 'RAPPROCHEMENT_CAISSE', label: '⚖️ Audit & Rapprochement' },
