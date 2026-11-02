@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@media print {
+  /* Ensure page backgrounds and text print properly */
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide app navigation and interactive controls */
+  header, 
+  nav, 
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure sheet takes full width on paper/PDF */
+  #pdf-presentation-sheet {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Page breaks */
+  .page-break-after {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 10mm 10mm 10mm;
+  }
+}
