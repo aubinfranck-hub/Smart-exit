@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ExitHistoryOnline } from './components/ExitHistoryOnline';
 import { ExitControlOnline } from './components/ExitControlOnline';
 import { SmartExitProvider, useSmartExit } from './context/SmartExitContext';
 import { Navbar, NavTab } from './components/Navbar';
@@ -27,7 +28,7 @@ const AppContent: React.FC = () => {
         {activeTab === 'RESPONSABLE_SECURITE' && <SecurityDashboard />}
         {activeTab === 'RAPPROCHEMENT_CAISSE' && <ReconciliationView />}
         {activeTab === 'DASHBOARD_DIRECTION' && <DirectionDashboard />}
-        {activeTab === 'HISTORIQUE' && <HistoryView />}
+        {activeTab === 'HISTORIQUE' && <ExitHistoryOnline />}
         {activeTab === 'TICKETS_TEST' && (
           <TicketDemoSheet onSwitchToTablet={() => setActiveTab('TABLET_VIGILE')} />
         )}
